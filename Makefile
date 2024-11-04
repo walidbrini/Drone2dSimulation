@@ -1,21 +1,35 @@
-# Makefile
-
+# Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99
-CFLAGS = -Wall -Wextra -std=c99 -pthread
+CFLAGS = -Wall -Wextra -std=c99 -pthread -Iinclude
 
-SRCS = jeu.c utilitaires.c threads_utility.c
+# Source and Object Files
+SRCS = src/jeu.c src/utilitaires.c src/threads_utility.c
+OBJS = $(SRCS:src/%.c=build/%.o)
 
-OBJS = $(SRCS:.c=.o)
-EXEC = my_program
+# Executable name and output directory
+EXEC = bin/my_program
 
+# Default target
 all: $(EXEC)
 
-$(EXEC): $(OBJS)
-	$(CC) $(CFLAGS) $^ -o $@
+# Rule to build the final executable
+$(EXEC): $(OBJS) | bin
+	$(CC) $(CFLAGS) $(OBJS) -o $(EXEC)
 
-%.o: %.c
+# Rule to compile each .c file to .o, placing .o files in the build directory
+build/%.o: src/%.c | build
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# Directories for build and binary files
+build:
+	mkdir -p build
+
+bin:
+	mkdir -p bin
+
+# Clean up build and binary files
 clean:
-	rm -f $(OBJS) $(EXEC)
+	rm -f build/*.o $(EXEC)
+
+# Phony targets
+.PHONY: all clean

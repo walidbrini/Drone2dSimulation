@@ -301,7 +301,7 @@ void generer_map_vc(carte_t *map, double probability, drone_t *drones, int num_d
 }
 
 void version_seq() {
-    const char *filename = "commande_drone.txt";
+    const char *filename = "../res/commande_drone.txt";
     int num_drones = 0;
     carte_t carte;
     drone_t *drones;
